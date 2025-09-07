@@ -15,6 +15,10 @@ Technologies Used
 -MongoDB(via Mongoose)
 -dotenv
 
+LLM Conversation Logs
+- Chatgpt https://chatgpt.com/share/68bd50b0-49ec-8000-a9ad-8212b3654ef3
+- Gemini https://gemini.google.com/app/7beb93f549480ab4
+
 How to Get Started ?
 Prerequisites
 
@@ -111,3 +115,5 @@ Notes
 - Make sure your MongoDB URI in `.env` is correct and accessible.
 - The sample data can be seeded using `node seed.js`.
 - All API requests and responses are in JSON format.
+
+
