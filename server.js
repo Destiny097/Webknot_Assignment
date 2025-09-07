@@ -109,4 +109,30 @@ app.get("/students",async (req,res)=>{
     }
 });
 
+app.get("/reports/top-students", async (req, res) => {
+  try {
+    const results = await Attendance.aggregate([
+      { $match: { status: "Present" } },
+      { $group: { _id: "$studentId", eventsAttended: { $sum: 1 } } },
+      { $sort: { eventsAttended: -1 } },
+      { $limit: 3 }
+    ]);
+
+    // You can optionally enrich the data to get student names
+    const studentIds = results.map(r => r._id);
+    const students = await Student.find({ _id: { $in: studentIds } });
+    const enrichedResults = results.map(r => {
+      const student = students.find(s => s._id.toString() === r._id.toString());
+      return {
+        student: student ? student.name : r._id,
+        eventsAttended: r.eventsAttended
+      };
+    });
+
+    res.send(enrichedResults);
+  } catch (err) {
+    res.status(500).send({ error: err.message });
+  }
+});
+
 app.listen(process.env.PORT, () => console.log("Server running on port 5000"));
